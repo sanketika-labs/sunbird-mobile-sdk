@@ -30,6 +30,7 @@ import { FormRequest } from 'src';
 export class FrameworkServiceImpl implements FrameworkService {
     private static readonly KEY_ACTIVE_CHANNEL_ID = FrameworkKeys.KEY_ACTIVE_CHANNEL_ID;
     private static readonly SEARCH_ORGANIZATION_ENDPOINT = '/search';
+    private static readonly READ_ORGANIZATION_ENDPOINT = '/read';
 
     private _activeChannelId?: string;
 
@@ -130,6 +131,20 @@ export class FrameworkServiceImpl implements FrameworkService {
         return this.apiService.fetch<{ result: { response: OrganizationSearchResponse<T> } }>(apiRequest).pipe(
             map((response) => {
                 return response.body.result.response;
+            })
+        );
+    }
+
+    getCategoryTerms(frameworkId: string): Observable<any> {
+        const apiRequest: Request = new Request.Builder()
+            .withType(HttpRequestType.GET)
+            .withPath(this.sdkConfig.frameworkServiceConfig.frameworkApiPath + FrameworkServiceImpl.READ_ORGANIZATION_ENDPOINT + '/' + frameworkId)
+            .withBearerToken(true)
+            .build();
+
+        return this.apiService.fetch<{ result: any }>(apiRequest).pipe(
+            map((response) => {
+                return response.body.result.framework;
             })
         );
     }
