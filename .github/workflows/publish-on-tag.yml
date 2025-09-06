@@ -1,0 +1,57 @@
+name: Publish on Tag
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21.7.3'
+
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Install Chromedriver
+        uses: nanasess/setup-chromedriver@v2
+
+      - name: Check Chrome and Chromedriver versions
+        run: |
+          google-chrome --version
+          chromedriver --version
+
+      - name: Restore node_modules cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node_modules-${{ hashFiles('package-lock.json') }}
+
+      - name: Install project dependencies
+        run: |
+          if [ ! -d "node_modules" ]; then
+            npm ci -f
+          fi
+
+      - name: Build project
+        run: npm run build:prod
+
+      - name: Pack dist
+        run: npm pack ./dist
+
+      - name: Set up .npmrc for publishing
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to NPM
+        run: npm publish project-fmps-sunbird-sdk-*
+        
+

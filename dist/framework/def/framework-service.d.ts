@@ -17,4 +17,5 @@ export interface FrameworkService extends SdkServicePreInitDelegate {
     searchOrganization<T extends Partial<Organization>>(request: OrganizationSearchCriteria<T>): Observable<OrganizationSearchResponse<T>>;
     setActiveChannelId(channelId: string): Observable<undefined>;
     getActiveChannelId(): Observable<string>;
+    getCategoryTerms(frameworkId: string): Observable<any>;
 }
