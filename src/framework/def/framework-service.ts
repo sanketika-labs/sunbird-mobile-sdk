@@ -26,4 +26,6 @@ export interface FrameworkService extends SdkServicePreInitDelegate {
     setActiveChannelId(channelId: string): Observable<undefined>;
 
     getActiveChannelId(): Observable<string>;
+
+    getCategoryTerms(frameworkId: string): Observable<any>;
 }
