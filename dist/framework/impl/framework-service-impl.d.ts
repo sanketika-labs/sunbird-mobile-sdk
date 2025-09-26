@@ -19,6 +19,7 @@ export declare class FrameworkServiceImpl implements FrameworkService {
     private csFrameworkService;
     private static readonly KEY_ACTIVE_CHANNEL_ID;
     private static readonly SEARCH_ORGANIZATION_ENDPOINT;
+    private static readonly READ_ORGANIZATION_ENDPOINT;
     private _activeChannelId?;
     constructor(sdkConfig: SdkConfig, fileService: FileService, apiService: ApiService, cachedItemStore: CachedItemStore, sharedPreferences: SharedPreferences, systemSettingsService: SystemSettingsService, csFrameworkService: CsFrameworkService);
     get activeChannelId(): string | undefined;
@@ -31,6 +32,7 @@ export declare class FrameworkServiceImpl implements FrameworkService {
     getFrameworkDetails(request: FrameworkDetailsRequest): Observable<Framework>;
     getFrameworkConfig(frameworkId: string, formRequest?: FormRequest): Observable<any>;
     searchOrganization<T extends Partial<Organization>>(request: OrganizationSearchCriteria<T>): Observable<OrganizationSearchResponse<T>>;
+    getCategoryTerms(frameworkId: string): Observable<any>;
     getActiveChannelId(): Observable<string>;
     setActiveChannelId(channelId: string): Observable<undefined>;
 }
